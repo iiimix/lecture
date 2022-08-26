@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 开发版本 原始大小110kb 压缩传输大小29.1kb-->
+  <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <!-- 开发版本 1.1Mb 压缩传输大小236kb -->
+  <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+
+  <!-- 开发版本 原始大小10.7kb 压缩传输大小4.5kb-->
+  <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <!-- 开发版本 132kb 压缩传输大小 43.7kb -->
+  <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+
+  <!-- <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> -->
+<!-- type="text/babel" -->
+  <script>
+    //              开发版本             生产版本
+    // vue          104kb               38.3kb
+    // react+dom    265kb(236+29.1）    48.2kb
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/javascript">
+    const list = new Array(10000).fill(1);
+    const h = React.createElement;
+    const useEffect = React.useEffect;
+    console.time('ReactTest');
+    console.time('ReactMount');
+    const App = function() {
+
+      useEffect(() => {
+        console.log(document.getElementById('lastOne'));
+        console.timeEnd('ReactMount');
+      });
+
+      const group = list.map(() => h('h2', {}, '标题二'));
+      group.push(h('h1', { id: 'lastOne' }, '标题二'))
+      return group;
+    }
+    
+    // class App extends React.Component {
+    //   componentDidMount() {
+    //     console.log(document.getElementById('lastOne'));
+    //     console.timeEnd('ReactMount');
+    //   }
+    //   render() {
+    //     const group = list.map(() => h('h2', {}, '标题二'));
+    //     group.push(h('h1', { id: 'lastOne' }, '标题二'))
+    //     return group;
+    //   }
+    // }
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(App);
+    console.log(document.getElementById('lastOne'));
+    console.timeEnd('ReactTest');
+    // 1w+节点  16-20ms
+    // 10w节点  78-84ms
+  </script>
+</body>
+</html>

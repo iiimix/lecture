@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cdn vue demo</title>
+  <script></script>
+  <!-- 开发版本 原始443kb  压缩后104k -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.9/dist/vue.js"></script>
+
+  <!-- 生产版本 原始大小107kb  压缩后38.3k -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.9"></script> -->
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/javascript">
+    const list = new Array(10000).fill(1);
+    const App = Vue.component('App', {
+      data() {
+        return {
+          list,
+        }
+      },
+      template: `<div><h2 v-for="item in list">标题二</h2><h1 id="lastOne"></h1></div>`,
+    });
+    console.time('VueTest');
+    console.time('VueTick')
+    new Vue({
+      el: '#app',
+      render: h => h(App),
+    });
+    Vue.nextTick(() => {
+      // console.log(document.getElementById('lastOne'));
+      console.timeEnd('VueTick');
+    });
+    console.log(document.getElementById('lastOne'));
+    console.timeEnd('VueTest');
+
+    // 1w+节点   24-29ms
+    // 10w+节点  140-150ms
+  </script>
+
+</body>
+</html>
